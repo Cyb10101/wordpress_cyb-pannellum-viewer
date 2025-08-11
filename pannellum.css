@@ -1,0 +1,40 @@
+.cyb-pannellum {
+  display: inline-block;
+  width: 100%;
+  max-height: 60vh;
+  aspect-ratio: 16/9;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+/* Custom controls */
+.cyb-pannellum .controls {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 3px;
+  pointer-events: none;
+}
+.cyb-pannellum .ctrl {
+  padding: 0.8em;
+  line-height: 1em;
+  text-align: center;
+  background: rgba(200, 200, 200, 0.8);
+  display: inline-block;
+  cursor: pointer;
+  pointer-events: auto;
+  border-left: 1px solid gray;
+}
+.cyb-pannellum .ctrl:first-child {
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+.cyb-pannellum .ctrl:last-child {
+  border-radius: 0 4px 4px 0;
+  border-right: none;
+}
+.cyb-pannellum .ctrl:hover {
+  background: rgba(200, 200, 200, 1);
+}
