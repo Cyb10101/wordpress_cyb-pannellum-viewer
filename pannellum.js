@@ -43,7 +43,7 @@ class CybPannellum {
     }
 
     const viewer = pannellum.viewer(container.id, config);
-    if (config.custom.controlsBottom) {
+    if (config.custom?.controlsBottom) {
       this.addControls(container, viewer);
     }
   }
