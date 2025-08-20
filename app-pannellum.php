@@ -46,30 +46,16 @@ class CybPannellum {
         $id = 'cyb-pannellum_' . (!empty($attrs['uid']) ? $attrs['uid'] : uniqid());
 
         $json = !empty($attrs['json']) && $attrs['json'] ? $attrs['json'] : '{}';
-        $config = json_decode($json, !true);
+        $config = json_decode($json, true);
         if (json_last_error() > 0) {
             return '<div>Pannellum JSON malformed: ' . json_last_error_msg() . '</div>';
         }
 
-        $attributes = $attrs;
-        unset($attributes['json']);
-        unset($attributes['preview']);
+        unset($attrs['json']);
+        unset($attrs['preview']);
+        $merged = array_replace_recursive($config, $attrs);
 
-        ob_start();
-        ?><div id="<?php echo esc_attr($id); ?>" class="cyb-pannellum"></div>
-        <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof pannellum !== 'undefined') {
-                try {
-                    (new CybPannellum).renderViewer("<?php echo esc_js($id); ?>", {
-                        ...<?php echo json_encode($config); ?>,
-                        ...<?php echo json_encode($attributes); ?>,
-                    });
-                } catch(e) {}
-            }
-        });
-        </script><?php
-        return ob_get_clean();
+        return '<div id="' . esc_attr($id) .'" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
     }
 }
 

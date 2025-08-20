@@ -2,22 +2,31 @@
 
 class CybPannellum {
   initialize() {
-    const instance = this;
+    const seen = new WeakSet();
+    const runOnce = (element) => {
+      if (element && !seen.has(element)) {
+        seen.add(element);
+        this.run(element);
+      }
+    };
+
+    // Element rendered with PHP
+    document.querySelectorAll('.cyb-pannellum').forEach(runOnce);
+
+    // Element added with JavaScrit
     const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        mutation.addedNodes.forEach(node => {
-        if (node.nodeType === 1) {
-          if (node.matches && node.matches('.cyb-pannellum')) {
-            instance.run(node);
-          } else {
-            const pannellumChild = node.querySelector && node.querySelector('.cyb-pannellum');
-            if (pannellumChild) {
-              instance.run(pannellumChild);
-            }
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType !== 1) {
+            continue;
+          }
+          if (node.matches?.('.cyb-pannellum')) {
+            runOnce(node);
+          } else if (node.querySelector?.('.cyb-pannellum')) {
+            runOnce(node.querySelector('.cyb-pannellum'));
           }
         }
-        });
-      });
+      }
     });
     observer.observe(document.body, {childList: true, subtree: true});
   }
