@@ -13,16 +13,16 @@ class CybPannellum {
     // Element rendered with PHP
     document.querySelectorAll('.cyb-pannellum').forEach(runOnce);
 
-    // Element added with JavaScrit
+    // Element added with JavaScript
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           if (node.nodeType !== 1) {
             continue;
           }
-          if (node.matches?.('.cyb-pannellum')) {
+          if (node.matches && node.matches('.cyb-pannellum')) {
             runOnce(node);
-          } else if (node.querySelector?.('.cyb-pannellum')) {
+          } else if (node.querySelector && node.querySelector('.cyb-pannellum')) {
             runOnce(node.querySelector('.cyb-pannellum'));
           }
         }
@@ -36,14 +36,17 @@ class CybPannellum {
   }
 
   run(container, config = null) {
-    if (container.dataset.initialized) {return;} else {container.dataset.initialized = 1;}
+    if (container.dataset.initialized) {
+        return;
+    }
+    container.dataset.initialized = 1;
 
     if (!config) {
       config = JSON.parse(container.dataset.config);
     }
 
     const viewer = pannellum.viewer(container.id, config);
-    if (config.custom?.controlsBottom) {
+    if (config.custom && config.custom.controlsBottom) {
       this.addControls(container, viewer);
     }
   }
@@ -89,25 +92,25 @@ class CybPannellum {
     controls.appendChild(controlFullscreen);
     container.appendChild(controls);
 
-    controlPanUp.addEventListener('click', (e) => {
+    controlPanUp.addEventListener('click', () => {
       viewer.setPitch(viewer.getPitch() + 10);
     });
-    controlPanDown.addEventListener('click', (e) => {
+    controlPanDown.addEventListener('click', () => {
       viewer.setPitch(viewer.getPitch() - 10);
     });
-    controlPanLeft.addEventListener('click', (e) => {
+    controlPanLeft.addEventListener('click', () => {
       viewer.setYaw(viewer.getYaw() - 10);
     });
-    controlPanRight.addEventListener('click', (e) => {
+    controlPanRight.addEventListener('click', () => {
       viewer.setYaw(viewer.getYaw() + 10);
     });
-    controlZoomIn.addEventListener('click', (e) => {
+    controlZoomIn.addEventListener('click', () => {
       viewer.setHfov(viewer.getHfov() - 10);
     });
-    controlZoomout.addEventListener('click', (e) => {
+    controlZoomout.addEventListener('click', () => {
       viewer.setHfov(viewer.getHfov() + 10);
     });
-    controlFullscreen.addEventListener('click', (e) => {
+    controlFullscreen.addEventListener('click', () => {
       viewer.toggleFullscreen();
     });
   }

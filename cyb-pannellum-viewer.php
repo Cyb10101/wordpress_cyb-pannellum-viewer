@@ -9,13 +9,19 @@ Author URI: https://cyb10101.de/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
-if (!defined('ABSPATH')) {exit();} // Exit if accessed directly
+
+if (!defined('ABSPATH')) {
+    exit(); // Exit if accessed directly
+}
 
 class CybPannellumViewer {
     public function initialize() {
         add_action('init', [$this, 'wpInit']);
     }
 
+    /**
+     * Wordpress initialize
+     */
     public function wpInit() {
         wp_enqueue_style('pannellum', plugins_url('vendor/pannellum.css', __FILE__), [], '2.5.6');
         wp_enqueue_script('pannellum', plugins_url('vendor/pannellum.js', __FILE__), [], '2.5.6', true);
@@ -42,7 +48,7 @@ class CybPannellumViewer {
         ]);
     }
 
-    public function renderBlock($attrs) {
+    public function renderBlock(array $attrs): string {
         $id = 'cyb-pannellum_' . (!empty($attrs['uid']) ? $attrs['uid'] : uniqid());
 
         $json = !empty($attrs['json']) && $attrs['json'] ? $attrs['json'] : '{}';
@@ -55,7 +61,7 @@ class CybPannellumViewer {
         unset($attrs['preview']);
         $merged = array_replace_recursive($config, $attrs);
 
-        return '<div id="' . esc_attr($id) .'" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
+        return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
     }
 }
 

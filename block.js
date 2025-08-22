@@ -27,7 +27,12 @@
           console.error('Invalid file', err);
         }
 
-        setTimeoutMessage(setTimeout(() => {setFileName(''); setError(false);}, 5000));
+        setTimeoutMessage(
+          setTimeout(() => {
+            setFileName('');
+            setError(false);
+          }, 5000)
+        );
       };
       reader.readAsText(file);
     };
@@ -38,24 +43,34 @@
       }
     };
 
-    return createElement('div', null,
-      createElement('div', {
-        style: {
-          flex: '0 1 auto',  alignSelf : 'center', display: 'block', textTransform: 'uppercase',
-          fontSize: '11px', fontWeight: '500', lineHeight: '1.4', marginBottom: '8px', padding: '0px'
-        }
-      }, 'Load config.json'),
-      createElement('div', {
-        style: {display: 'flex', gap: '10px', alignItems: 'flex-start'}
-      }, createElement('input', {
-          type: 'file',
-          accept: '.json',
-          onChange: handleChange,
-          style: {flex: '1 1 auto'}
-        }),
-        fileName && createElement('div', {
-          style: {flex: '1 1 auto', fontSize: '0.8em', textAlign: 'end', alignSelf : 'center'}
-        }, !error ? `✅ ${fileName} loaded.` : `⚠️ ${fileName} loaded, but not successfully parsed!`)
+    return createElement(
+      'div', null,
+      createElement(
+        'div', {
+          style: {
+            flex: '0 1 auto', alignSelf: 'center', display: 'block', textTransform: 'uppercase',
+            fontSize: '11px', fontWeight: '500', lineHeight: '1.4', marginBottom: '8px', padding: '0px'
+          }
+        }, 'Load config.json'
+      ),
+      createElement(
+        'div', {
+          style: {display: 'flex', gap: '10px', alignItems: 'flex-start'}
+        },
+        createElement(
+          'input', {
+            type: 'file',
+            accept: '.json',
+            onChange: handleChange,
+            style: {flex: '1 1 auto'}
+          }
+        ),
+        fileName && createElement(
+          'div', {
+            style: {flex: '1 1 auto', fontSize: '0.8em', textAlign: 'end', alignSelf : 'center'}
+          },
+          !error ? `✅ ${fileName} loaded.` : `⚠️ ${fileName} loaded, but not successfully parsed!`
+        )
       )
     );
   }
@@ -96,7 +111,11 @@
           ...JSON.parse(attributes.json),
           ...configAttributes
         };
-        pannellumPreview = createElement('div', {key: uniqueKey, id: previewId, className: 'cyb-pannellum', style: {}, 'data-config': JSON.stringify(config)});
+        pannellumPreview = createElement(
+          'div', {
+            key: uniqueKey, id: previewId, className: 'cyb-pannellum', style: {}, 'data-config': JSON.stringify(config)
+          }
+        );
       } catch (exception) {
         pannellumPreview = createElement('p', null, '⚠️ Invalid JSON config');
       }
@@ -132,80 +151,101 @@
       }
 
       // Json Editor
-      const pannellumEditor = createElement('div', null,
-        createElement(TextareaControl, {
-          label: 'Pannellum JSON Config',
-          value: attributes.json,
-          onChange: value => {
-            updateConfig(value);
-            setAttributes({json: value});
-          },
-          rows: 15,
-        }),
-        createElement(CustomUploadControl, {
-          onDataLoaded: (data) => {
-            updateConfig(data);
-            setAttributes({json: data});
-            if (attributes.basePath && attributes.basePath !== '') {
-              setAttributes({preview: true});
+      const pannellumEditor = createElement(
+        'div', null,
+        createElement(
+          TextareaControl, {
+            label: 'Pannellum JSON Config',
+            value: attributes.json,
+            onChange: value => {
+              updateConfig(value);
+              setAttributes({json: value});
+            },
+            rows: 15,
+          }
+        ),
+        createElement(
+          CustomUploadControl, {
+            onDataLoaded: (data) => {
+              updateConfig(data);
+              setAttributes({json: data});
+              if (attributes.basePath && attributes.basePath !== '') {
+                setAttributes({preview: true});
+              }
             }
           }
-        })
+        )
       );
 
-      return createElement('div', null,
-        createElement(InspectorControls, null,
-          createElement(PanelBody, {title: 'Settings', initialOpen: true},
-            createElement(TextControl, {
-              label: 'Base Path',
-              value: attributes.basePath || '/',
-              type: 'text',
-              onChange: (val) => setAttributes({basePath: val}),
-            }),
+      return createElement(
+        'div', null,
+        createElement(
+          InspectorControls, null,
 
-            createElement(ToggleControl, {
-              label: 'Debug Position',
-              help: 'Click on image and see hotspot positions in developer console.',
-              checked: attributes.hotSpotDebug || false,
-              onChange: (val) => setAttributes({hotSpotDebug: val})
-            }),
-
-            createElement(RangeControl, {
-              label: 'Auto Rotate Speed',
-              value: attributes.autoRotate || 0,
-              onChange: (val) => setAttributes({autoRotate: val}),
-              min: -20,
-              max: 20,
-              step: 1
-            }),
-
-            createElement(TextControl, {
-              label: 'Auto Rotate Inactivity Delay (sec)',
-              value: attributes.autoRotateInactivityDelay || 5000,
-              type: 'number',
-              step: 500,
-              min: 0,
-              onChange: (val) => setAttributes({autoRotateInactivityDelay: val}),
-            })
+          createElement(
+            PanelBody, {title: 'Settings', initialOpen: true},
+            createElement(
+              TextControl, {
+                label: 'Base Path',
+                value: attributes.basePath || '/',
+                type: 'text',
+                onChange: (val) => setAttributes({basePath: val}),
+              }
+            ),
+            createElement(
+              ToggleControl, {
+                label: 'Debug Position',
+                help: 'Click on image and see hotspot positions in developer console.',
+                checked: attributes.hotSpotDebug || false,
+                onChange: (val) => setAttributes({hotSpotDebug: val})
+              }
+            ),
+            createElement(
+              RangeControl, {
+                label: 'Auto Rotate Speed',
+                value: attributes.autoRotate || 0,
+                onChange: (val) => setAttributes({autoRotate: val}),
+                min: -20,
+                max: 20,
+                step: 1
+              }
+            ),
+            createElement(
+              TextControl, {
+                label: 'Auto Rotate Inactivity Delay (sec)',
+                value: attributes.autoRotateInactivityDelay || 5000,
+                type: 'number',
+                step: 500,
+                min: 0,
+                onChange: (val) => setAttributes({autoRotateInactivityDelay: val}),
+              }
+            )
           ),
 
-          createElement(PanelBody, {title: 'Custom Options', initialOpen: !false},
-            createElement(ToggleControl, {
-              label: 'Bottom Controls',
-              help: 'Add controls at bottom',
-              checked: attributes.custom.controlsBottom || false,
-              onChange: (val) => setAttributes({custom: {...attributes.custom, controlsBottom: val}})
-            }),
+          createElement(
+            PanelBody, {title: 'Custom Options', initialOpen: true},
+            createElement(
+              ToggleControl, {
+                label: 'Bottom Controls',
+                help: 'Add controls at bottom',
+                checked: attributes.custom.controlsBottom || false,
+                onChange: (val) => setAttributes({custom: {...attributes.custom, controlsBottom: val}})
+              }
+            ),
           )
         ),
-        createElement(BlockControls, null,
-          createElement(ToolbarGroup, null,
-              createElement(ToolbarButton, {
-                  icon: attributes.preview ? 'visibility' : 'hidden',
-                  label: attributes.preview ? 'Hide Preview' : 'Show Preview',
-                  onClick: () => setAttributes({ preview: !attributes.preview }),
-                  isPressed: attributes.preview,
-              })
+        createElement(
+          BlockControls, null,
+          createElement(
+            ToolbarGroup, null,
+            createElement(
+              ToolbarButton, {
+                icon: attributes.preview ? 'visibility' : 'hidden',
+                label: attributes.preview ? 'Hide Preview' : 'Show Preview',
+                onClick: () => setAttributes({preview: !attributes.preview}),
+                isPressed: attributes.preview,
+              }
+            )
           )
         ),
         attributes.preview ? pannellumPreview : pannellumEditor
