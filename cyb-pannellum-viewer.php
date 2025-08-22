@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 if (!defined('ABSPATH')) {exit();} // Exit if accessed directly
 
-class CybPannellum {
+class CybPannellumViewer {
     public function initialize() {
         add_action('init', [$this, 'wpInit']);
     }
@@ -59,5 +59,5 @@ class CybPannellum {
     }
 }
 
-$cybPannellum = new CybPannellum();
-$cybPannellum->initialize();
+$cybPannellumViewer = new CybPannellumViewer();
+$cybPannellumViewer->initialize();
