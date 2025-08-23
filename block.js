@@ -103,14 +103,18 @@
       // Preview
       let pannellumPreview = null;
       try {
-        let configAttributes = {...attributes};
-        delete configAttributes.json;
-        delete configAttributes.preview;
-
-        const config = {
-          ...JSON.parse(attributes.json),
-          ...configAttributes
+        const config = JSON.parse(attributes.json);
+        Object.assign(config, {
+          basePath: attributes.basePath,
+          hotSpotDebug: attributes.hotSpotDebug,
+          autoRotate: attributes.autoRotate,
+          autoRotateInactivityDelay: attributes.autoRotateInactivityDelay,
+        });
+        config.custom = {
+          ...(config.custom || {}),
+          controlsBottom: attributes.custom && attributes.custom.controlsBottom,
         };
+
         pannellumPreview = createElement(
           'div', {
             key: uniqueKey, id: previewId, className: 'cyb-pannellum', style: {}, 'data-config': JSON.stringify(config)

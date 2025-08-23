@@ -58,6 +58,14 @@ class CybPannellumViewer {
             'attributes' => [
                 'uid' => ['type' => 'string', 'default' => ''],
                 'json' => ['type' => 'string', 'default' => ''],
+                'preview' => ['type' => 'boolean', 'default' => false],
+                'basePath' => ['type' => 'string', 'default' => ''],
+                'hotSpotDebug' => ['type' => 'boolean', 'default' => false],
+                'autoRotate' => ['type' => 'integer', 'default' => -2],
+                'autoRotateInactivityDelay' => ['type' => 'number', 'default' => 5000],
+                'custom' => ['type' => 'object', 'default' => [
+                    'controlsBottom' => false,
+                ]],
             ],
         ]);
     }
@@ -83,9 +91,13 @@ class CybPannellumViewer {
             return '<div>Pannellum JSON malformed: ' . json_last_error_msg() . '</div>';
         }
 
-        unset($attrs['json']);
-        unset($attrs['preview']);
-        $merged = array_replace_recursive($config, $attrs);
+        $merged = array_replace_recursive($config, [
+            'basePath' => $attrs['basePath'],
+            'hotSpotDebug' => $attrs['hotSpotDebug'],
+            'autoRotate' => $attrs['autoRotate'],
+            'autoRotateInactivityDelay' => $attrs['autoRotateInactivityDelay'],
+            'custom' => $attrs['custom'],
+        ]);
 
         $this->enqueueAssets();
         return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
