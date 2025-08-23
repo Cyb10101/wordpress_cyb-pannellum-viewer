@@ -70,6 +70,9 @@ class CybPannellumViewer {
         ]);
     }
 
+    /**
+     * Wordpress enqueue block editor assets
+     */
     public function wpEnqueueBlockEditorAssets() {
         $this->enqueueAssets();
     }
@@ -82,25 +85,28 @@ class CybPannellumViewer {
         wp_enqueue_script('cyb-pannellum-viewer');
     }
 
-    public function renderBlock(array $attrs): string {
-        $id = 'cyb-pannellum_' . (!empty($attrs['uid']) ? $attrs['uid'] : uniqid());
-
-        $json = !empty($attrs['json']) && $attrs['json'] ? $attrs['json'] : '{}';
+    /**
+     * Render block for frontend
+     */
+    public function renderBlock(array $attributes, string $content, \WP_Block $block): string {
+        $id = 'cyb-pannellum-viewer_' . (!empty($attributes['uid']) ? $attributes['uid'] : '');
+        $json = !empty($attributes['json']) ? $attributes['json'] : '{}';
         $config = json_decode($json, true);
         if (json_last_error() > 0) {
             return '<div>Pannellum JSON malformed: ' . json_last_error_msg() . '</div>';
         }
 
         $merged = array_replace_recursive($config, [
-            'basePath' => $attrs['basePath'],
-            'hotSpotDebug' => $attrs['hotSpotDebug'],
-            'autoRotate' => $attrs['autoRotate'],
-            'autoRotateInactivityDelay' => $attrs['autoRotateInactivityDelay'],
-            'custom' => $attrs['custom'],
+            'basePath' => $attributes['basePath'],
+            'hotSpotDebug' => $attributes['hotSpotDebug'],
+            'autoRotate' => $attributes['autoRotate'],
+            'autoRotateInactivityDelay' => $attributes['autoRotateInactivityDelay'],
+            'custom' => $attributes['custom'],
         ]);
 
         $this->enqueueAssets();
-        return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . esc_attr(wp_json_encode($merged)) . '\'></div>';
+        return '<div id="' . esc_attr($id) . '" class="cyb-pannellum-viewer"'
+            . ' data-config=\'' . esc_attr(wp_json_encode($merged)) . '\'></div>';
     }
 }
 

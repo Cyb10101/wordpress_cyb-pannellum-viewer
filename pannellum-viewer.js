@@ -11,7 +11,7 @@ class CybPannellum {
     };
 
     // Element rendered with PHP
-    document.querySelectorAll('.cyb-pannellum').forEach(runOnce);
+    document.querySelectorAll('.cyb-pannellum-viewer').forEach(runOnce);
 
     // Element added with JavaScript
     const observer = new MutationObserver(mutations => {
@@ -20,10 +20,10 @@ class CybPannellum {
           if (node.nodeType !== 1) {
             continue;
           }
-          if (node.matches && node.matches('.cyb-pannellum')) {
+          if (node.matches && node.matches('.cyb-pannellum-viewer')) {
             runOnce(node);
-          } else if (node.querySelector && node.querySelector('.cyb-pannellum')) {
-            runOnce(node.querySelector('.cyb-pannellum'));
+          } else if (node.querySelector && node.querySelector('.cyb-pannellum-viewer')) {
+            runOnce(node.querySelector('.cyb-pannellum-viewer'));
           }
         }
       }
@@ -41,7 +41,7 @@ class CybPannellum {
     }
     container.dataset.initialized = 1;
 
-    if (!config) {
+    if (!config && container.dataset.config !== '') {
       config = JSON.parse(container.dataset.config);
     }
 

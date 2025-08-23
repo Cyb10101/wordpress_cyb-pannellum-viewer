@@ -96,8 +96,6 @@
     edit: (props) => {
       const {attributes, clientId, setAttributes} = props;
       setAttributes({uid: clientId});
-
-      const previewId = 'cyb-pannellum-preview_' + attributes.uid;
       const uniqueKey = JSON.stringify(attributes);
 
       // Preview
@@ -117,7 +115,8 @@
 
         pannellumPreview = createElement(
           'div', {
-            key: uniqueKey, id: previewId, className: 'cyb-pannellum', style: {}, 'data-config': JSON.stringify(config)
+            key: uniqueKey, id: 'cyb-pannellum-viewer_' + attributes.uid, className: 'cyb-pannellum-viewer',
+            'data-config': JSON.stringify(config)
           }
         );
       } catch (exception) {

@@ -1,4 +1,4 @@
-.cyb-pannellum {
+.cyb-pannellum-viewer {
   display: inline-block;
   width: 100%;
   max-height: 60vh;
@@ -8,7 +8,7 @@
 }
 
 /* Custom controls */
-.cyb-pannellum .controls {
+.cyb-pannellum-viewer .controls {
   position: absolute;
   bottom: 0;
   z-index: 2;
@@ -17,7 +17,7 @@
   padding-bottom: 3px;
   pointer-events: none;
 }
-.cyb-pannellum .ctrl {
+.cyb-pannellum-viewer .ctrl {
   padding: 0.8em;
   line-height: 1em;
   text-align: center;
@@ -27,14 +27,14 @@
   pointer-events: auto;
   border-left: 1px solid gray;
 }
-.cyb-pannellum .ctrl:first-child {
+.cyb-pannellum-viewer .ctrl:first-child {
   border-radius: 4px 0 0 4px;
   border-right: none;
 }
-.cyb-pannellum .ctrl:last-child {
+.cyb-pannellum-viewer .ctrl:last-child {
   border-radius: 0 4px 4px 0;
   border-right: none;
 }
-.cyb-pannellum .ctrl:hover {
+.cyb-pannellum-viewer .ctrl:hover {
   background: rgba(200, 200, 200, 1);
 }
