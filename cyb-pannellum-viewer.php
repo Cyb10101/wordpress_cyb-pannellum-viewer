@@ -17,25 +17,39 @@ if (!defined('ABSPATH')) {
 class CybPannellumViewer {
     public function initialize() {
         add_action('init', [$this, 'wpInit']);
+        add_action('enqueue_block_editor_assets', [$this, 'wpEnqueueBlockEditorAssets']);
     }
 
     /**
      * Wordpress initialize
      */
     public function wpInit() {
-        wp_enqueue_style('pannellum', plugins_url('vendor/pannellum.css', __FILE__), [], '2.5.6');
-        wp_enqueue_script('pannellum', plugins_url('vendor/pannellum.js', __FILE__), [], '2.5.6', true);
-
-        wp_enqueue_style('cyb-pannellum', plugins_url('pannellum.css', __FILE__), [],
-            filemtime(plugin_dir_path(__FILE__) . 'pannellum.css')
+        wp_register_style('pannellum', plugins_url('vendor/pannellum.css', __FILE__), [], '2.5.6');
+        wp_register_script('pannellum', plugins_url('vendor/pannellum.js', __FILE__), [], '2.5.6',
+            [
+                'in_footer' => true,
+                'strategy'  => 'async',
+            ]
         );
-        wp_enqueue_script('cyb-pannellum', plugins_url('pannellum.js', __FILE__), ['pannellum'],
-            filemtime(plugin_dir_path(__FILE__) . 'pannellum.js'), true
+
+        wp_register_style('cyb-pannellum-viewer', plugins_url('pannellum-viewer.css', __FILE__), [],
+            filemtime(plugin_dir_path(__FILE__) . 'pannellum-viewer.css')
+        );
+        wp_register_script('cyb-pannellum-viewer', plugins_url('pannellum-viewer.js', __FILE__), ['pannellum'],
+            filemtime(plugin_dir_path(__FILE__) . 'pannellum-viewer.js'),
+            [
+                'in_footer' => true,
+                'strategy'  => 'async',
+            ]
         );
 
         wp_register_script('cyb-pannellum-block', plugins_url('block.js', __FILE__),
-            ['wp-blocks', 'wp-element', 'wp-components', 'pannellum', 'cyb-pannellum'],
-            filemtime(plugin_dir_path(__FILE__) . 'block.js'), true
+            ['wp-blocks', 'wp-element', 'wp-components'],
+            filemtime(plugin_dir_path(__FILE__) . 'block.js'),
+            [
+                'in_footer' => true,
+                'strategy'  => 'async',
+            ]
         );
 
         register_block_type('cyb/pannellum-viewer', [
@@ -46,6 +60,18 @@ class CybPannellumViewer {
                 'json' => ['type' => 'string', 'default' => ''],
             ],
         ]);
+    }
+
+    public function wpEnqueueBlockEditorAssets() {
+        $this->enqueueAssets();
+    }
+
+    protected function enqueueAssets() {
+        wp_enqueue_style('pannellum');
+        wp_enqueue_script('pannellum');
+
+        wp_enqueue_style('cyb-pannellum-viewer');
+        wp_enqueue_script('cyb-pannellum-viewer');
     }
 
     public function renderBlock(array $attrs): string {
@@ -61,6 +87,7 @@ class CybPannellumViewer {
         unset($attrs['preview']);
         $merged = array_replace_recursive($config, $attrs);
 
+        $this->enqueueAssets();
         return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
     }
 }
