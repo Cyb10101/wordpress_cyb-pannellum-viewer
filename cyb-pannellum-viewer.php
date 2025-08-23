@@ -100,7 +100,7 @@ class CybPannellumViewer {
         ]);
 
         $this->enqueueAssets();
-        return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . wp_json_encode($merged) . '\'></div>';
+        return '<div id="' . esc_attr($id) . '" class="cyb-pannellum" data-config=\'' . esc_attr(wp_json_encode($merged)) . '\'></div>';
     }
 }
 
