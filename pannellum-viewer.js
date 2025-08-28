@@ -35,16 +35,57 @@ class CybPannellum {
     this.run(document.getElementById(containerId), config);
   }
 
-  run(container, config = null) {
+  // Fetch configuration
+  async fetchConfig(url) {
+    url = (url || '').trim();
+    if (!url) {
+      return null;
+    }
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      return data ?? null;
+    } catch (exception) {
+      console.error('Pannellum fetchConfig failed', exception);
+      return null;
+    }
+  };
+
+  async run(container, config = null) {
     if (container.dataset.initialized) {
-        return;
+      return;
     }
     container.dataset.initialized = 1;
 
-    if (!config && container.dataset.config !== '') {
-      config = JSON.parse(container.dataset.config);
+    // Fetch configuration
+    if (!config && container.dataset.src) {
+      config = await this.fetchConfig(container.dataset.src);
     }
 
+    // Override config with block editor attributes
+    if (container.dataset.override) {
+      try {
+        const override = JSON.parse(container.dataset.override);
+        config = {...config, ...override}
+      } catch (exception) {
+        console.error(exception);
+      }
+    }
+
+    // Detect base path
+    if (container.dataset.src && (!config.basePath || config.basePath === '')) {
+      config.basePath = container.dataset.src.replace(/\/[^\/]*$/, '/');
+    }
+
+    // Create viewer
     const viewer = pannellum.viewer(container.id, config);
     if (config.custom && config.custom.controlsBottom) {
       this.addControls(container, viewer);

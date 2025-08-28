@@ -57,12 +57,18 @@ class CybPannellumViewer {
             'render_callback' => [$this, 'renderBlock'],
             'attributes' => [
                 'uid' => ['type' => 'string', 'default' => ''],
-                'json' => ['type' => 'string', 'default' => ''],
-                'preview' => ['type' => 'boolean', 'default' => false],
+                'src' => ['type' => 'string', 'default' => ''],
+                // Preview not needed
+
                 'basePath' => ['type' => 'string', 'default' => ''],
                 'hotSpotDebug' => ['type' => 'boolean', 'default' => false],
-                'autoRotate' => ['type' => 'integer', 'default' => -2],
+                'autoRotate' => ['type' => 'number', 'default' => -2],
                 'autoRotateInactivityDelay' => ['type' => 'number', 'default' => 5000],
+
+                'hfov' => ['type' => 'number', 'default' => 100],
+                'yaw' => ['type' => 'number', 'default' => 0],
+                'pitch' => ['type' => 'number', 'default' => 0],
+
                 'custom' => ['type' => 'object', 'default' => [
                     'controlsBottom' => false,
                 ]],
@@ -90,23 +96,25 @@ class CybPannellumViewer {
      */
     public function renderBlock(array $attributes, string $content, \WP_Block $block): string {
         $id = 'cyb-pannellum-viewer_' . (!empty($attributes['uid']) ? $attributes['uid'] : '');
-        $json = !empty($attributes['json']) ? $attributes['json'] : '{}';
-        $config = json_decode($json, true);
-        if (json_last_error() > 0) {
-            return '<div>Pannellum JSON malformed: ' . json_last_error_msg() . '</div>';
-        }
+        $src = (!empty($attributes['src']) ? $attributes['src'] : '');
 
-        $merged = array_replace_recursive($config, [
+        $override = [
             'basePath' => $attributes['basePath'],
             'hotSpotDebug' => $attributes['hotSpotDebug'],
             'autoRotate' => $attributes['autoRotate'],
             'autoRotateInactivityDelay' => $attributes['autoRotateInactivityDelay'],
+
+            'yaw' => $attributes['yaw'],
+            'pitch' => $attributes['pitch'],
+            'hfov' => $attributes['hfov'],
+
             'custom' => $attributes['custom'],
-        ]);
+        ];
 
         $this->enqueueAssets();
         return '<div id="' . esc_attr($id) . '" class="cyb-pannellum-viewer"'
-            . ' data-config=\'' . esc_attr(wp_json_encode($merged)) . '\'></div>';
+            . ' data-src="' . esc_attr($src) . '"'
+            . ' data-override=\'' . esc_attr(wp_json_encode($override)) . '\'></div>';
     }
 }
 
