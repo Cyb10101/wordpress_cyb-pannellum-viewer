@@ -14,6 +14,11 @@ Embed interactive 360° panoramas using [Pannellum](https://pannellum.org/), sup
 
 Perfect for virtual tours, exhibitions or immersive media content.
 
+## Links
+
+* [Plugin on WordPress](https://wordpress.org/plugins/cyb-pannellum-viewer)
+* [Source Code](https://github.com/Cyb10101/wordpress_cyb-pannellum-viewer)
+
 ## Note
 
 The goal of the project was to implement a panorama in a relatively simple way.
