@@ -104,11 +104,10 @@
         }
 
         if (config.hasOwnProperty('custom')) {
-          const custom = newAttributes.custom;
+          newAttributes.custom = {};
           if (config.custom.hasOwnProperty('controlsBottom')) {
-            custom.controlsBottom = (config.custom.controlsBottom === true);
+            newAttributes.custom.controlsBottom = (config.custom.controlsBottom === true);
           }
-          newAttributes.custom = custom;
         }
         return newAttributes;
       }
