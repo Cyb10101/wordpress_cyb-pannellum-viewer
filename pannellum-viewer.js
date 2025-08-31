@@ -63,12 +63,15 @@ class CybPannellum {
     if (container.dataset.initialized) {
       return;
     }
-    container.dataset.initialized = 1;
 
     // Fetch configuration
     if (!config && container.dataset.src) {
       config = await this.fetchConfig(container.dataset.src);
     }
+    if (!config) {
+      return;
+    }
+    container.dataset.initialized = 1;
 
     // Override config with block editor attributes
     if (container.dataset.override) {
@@ -85,7 +88,10 @@ class CybPannellum {
       config.basePath = container.dataset.src.replace(/\/[^\/]*$/, '/');
     }
 
-    // Create viewer
+    this.createPannellum(container, config);
+  }
+
+  createPannellum(container, config) {
     const viewer = pannellum.viewer(container.id, config);
     if (config.custom && config.custom.controlsBottom) {
       this.addControls(container, viewer);
