@@ -24,8 +24,9 @@ class CybPannellumViewer {
      * Wordpress initialize
      */
     public function wpInit() {
-        wp_register_style('pannellum', plugins_url('vendor/pannellum.css', __FILE__), [], '2.5.6');
-        wp_register_script('pannellum', plugins_url('vendor/pannellum.js', __FILE__), [], '2.5.6',
+        $versionPannellum='2.5.6'; // https://pannellum.org/download/
+        wp_register_style('pannellum', plugins_url('vendor/pannellum.css', __FILE__), [], $versionPannellum);
+        wp_register_script('pannellum', plugins_url('vendor/pannellum.js', __FILE__), [], $versionPannellum,
             [
                 'in_footer' => true,
                 'strategy'  => 'async',
