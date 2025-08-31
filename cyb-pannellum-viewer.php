@@ -4,7 +4,7 @@ Plugin Name: Cyb Pannellum Viewer
 Plugin URI: https://github.com/Cyb10101/wordpress_cyb-pannellum-viewer
 Description: Adds a Pannellum Viewer
 Author: Cyb10101
-Version: 1.0.0
+Version: 1.0.1
 Author URI: https://cyb10101.de/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
