@@ -31,11 +31,9 @@ You can generate multi-resolution tiles for a panorama with [Pannellum multires 
 
 1. Generate panorama
 2. Create a `config.json` if it is not already automatically generated
-3. Move files to `/panorama/pannellum/project-name/` (for example)
+3. Copy files to `/panorama/pannellum/project/` (for example)
 4. Add the **Pannellum Viewer** WordPress block in the Gutenberg editor
-5. Import `config.json` via "Browse/Choose File" button or paste JSON code directly into the editor
-6. In the sidebar, set the base path (basePath) to `/panorama/pannellum/project-name/`
-7. In the toolbar, switch to preview view
+5. Embed `/panorama/pannellum/project/config.json`
 
 ## Credits
 
