@@ -163,6 +163,10 @@ class CybPannellum {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState != 'loading') {
   (new CybPannellum).initialize();
-});
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    (new CybPannellum).initialize();
+  });
+}
